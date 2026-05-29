@@ -1,5 +1,5 @@
 export const mockUser = {
-  userId: 'AUSADMIN',
+  email: 'admin@gopayments.com',
   password: 'Admin@123',
   name: 'AUS Admin',
   accountNumber: '000101000000008710',

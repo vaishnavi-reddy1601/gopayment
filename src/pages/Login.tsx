@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Lock, User } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
-  const [userId, setUserId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -17,11 +17,11 @@ export default function Login() {
     setError('');
     setLoading(true);
     setTimeout(() => {
-      const success = login(userId, password);
+      const success = login(email, password);
       if (success) {
         navigate('/dashboard');
       } else {
-        setError('Invalid User ID or Password. Please try again.');
+        setError('Invalid Email ID or Password. Please try again.');
       }
       setLoading(false);
     }, 800);
@@ -52,20 +52,20 @@ export default function Login() {
           {/* Form */}
           <div className="px-8 py-8">
             <form onSubmit={handleSubmit} className="space-y-5">
-              {/* User ID */}
+              {/* Email ID */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  User ID <span className="text-red-500">*</span>
+                  Email ID <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <User size={16} className="text-gray-400" />
+                    <Mail size={16} className="text-gray-400" />
                   </div>
                   <input
-                    type="text"
-                    value={userId}
-                    onChange={e => setUserId(e.target.value)}
-                    placeholder="Enter your User ID"
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder="Enter your Email ID"
                     className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                     required
                   />
@@ -131,8 +131,8 @@ export default function Login() {
             <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
               <p className="text-xs font-semibold text-blue-700 mb-2">Demo Credentials</p>
               <div className="grid grid-cols-2 gap-1 text-xs text-blue-600">
-                <span className="text-gray-500">User ID:</span>
-                <span className="font-mono font-medium">AUSADMIN</span>
+                <span className="text-gray-500">Email ID:</span>
+                <span className="font-mono font-medium">admin@gopayments.com</span>
                 <span className="text-gray-500">Password:</span>
                 <span className="font-mono font-medium">Admin@123</span>
               </div>

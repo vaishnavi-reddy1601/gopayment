@@ -4,7 +4,7 @@ import { mockUser } from '../data/mockData';
 interface AuthContextType {
   isAuthenticated: boolean;
   user: typeof mockUser | null;
-  login: (userId: string, password: string) => boolean;
+  login: (email: string, password: string) => boolean;
   logout: () => void;
 }
 
@@ -14,8 +14,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<typeof mockUser | null>(null);
 
-  const login = (userId: string, password: string) => {
-    if (userId === mockUser.userId && password === mockUser.password) {
+  const login = (email: string, password: string) => {
+    if (email === mockUser.email && password === mockUser.password) {
       setIsAuthenticated(true);
       setUser(mockUser);
       return true;

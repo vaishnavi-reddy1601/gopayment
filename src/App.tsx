@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import Layout from './components/Layout/Layout';
@@ -33,6 +34,34 @@ import Notifications from './pages/Notifications';
 import AuditTrail from './pages/AuditTrail';
 import ApiTesting from './pages/ApiTesting';
 
+const WIDGET_SCRIPT_ID = 'agent-chat-widget';
+
+function ChatWidget() {
+  const { isAuthenticated, user } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      document.getElementById(WIDGET_SCRIPT_ID)?.remove();
+      const script = document.createElement('script');
+      script.id = WIDGET_SCRIPT_ID;
+      script.src = 'https://d3byfcqrt74543.cloudfront.net/widgets/agent-widget.js';
+      script.defer = true;
+      script.setAttribute('agentId', 'agnt_d9fd675f-0e2a-4a01-a5de-daa6f47d442f');
+      script.setAttribute('position', 'bottom-right');
+      script.setAttribute('welcomeMessage', 'Hi There! I am your helpful AI Agent..');
+      script.setAttribute('title', 'AI Chat');
+      script.setAttribute('userId', user.email);
+      script.setAttribute('header-user-email', user.email);
+      script.setAttribute('header-user-name', user.name);
+      document.body.appendChild(script);
+    } else {
+      document.getElementById(WIDGET_SCRIPT_ID)?.remove();
+    }
+  }, [isAuthenticated, user]);
+
+  return null;
+}
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
@@ -42,6 +71,8 @@ function AppRoutes() {
   const { isAuthenticated } = useAuth();
 
   return (
+    <>
+    <ChatWidget />
     <Routes>
       <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />} />
 
@@ -108,6 +139,7 @@ function AppRoutes() {
       {/* Catch-all */}
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
+    </>
   );
 }
 
